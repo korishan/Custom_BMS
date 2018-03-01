@@ -1,3 +1,5 @@
+#ifndef CONSTANTS_H
+#define CONSTANTS_H
 
 const short SYS_STAT = 0x00;
 const short CELLBAL1 = 0x01;
@@ -193,3 +195,5 @@ const short ADCOFFSET3 = 3; //
 const short ADCOFFSET2 = 2; // Review the table in the BQ769x0 PDF Page 45 for example offsets.
 const short ADCOFFSET1 = 1; //
 const short ADCOFFSET0 = 0; //
+
+#endif
