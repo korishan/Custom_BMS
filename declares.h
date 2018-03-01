@@ -3,8 +3,8 @@
 #include "U8glib.h"
 
 // Display Prototypes
-extern U8GLIB_SSD1306_128X64 oled(U8G_I2C_OPT_DEV_0 | U8G_I2C_OPT_NO_ACK | U8G_I2C_OPT_FAST); // Fast I2C / TWI
 void draw(void);
+void oled_loop();
 
 // Menu Prototypes
 void PrintMenu();
@@ -16,6 +16,7 @@ int16_t readFrom(uint8_t deviceAddress, uint16_t settingFlag, uint16_t numBytes)
 
 // BMS Prototypes
 void readVoltages(uint8_t deviceAddress);
+void get_bms_status();
 
 #endif
 

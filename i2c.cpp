@@ -1,21 +1,11 @@
 #include <Arduino.h>
 #include <Wire.h>
-
-#ifndef CONSTANTS_H
-#define CONSTANTS_H
 #include "constants.h"
-#endif
-
-#ifndef U8GLIB_H
-#define U8GLIB_H
 #include "U8glib.h"
-#endif
-
-#ifndef DECLARES_H
-#define DECLARES_H
 #include "declares.h"
-#endif
+#include "bms.h"
 
+short nDevices;
 
 void writeTo(uint8_t deviceAddress, uint16_t settingFlag, uint16_t FlagValue)
 {
@@ -66,4 +56,46 @@ int16_t readFrom(uint8_t deviceAddress, uint16_t settingFlag, uint16_t numBytes)
 
   return rData;
 }
+
+void SearchDevices()
+{
+  uint8_t findaddress;
+  uint8_t error;
+
+  Serial.println("\nScanning Bus...");
+
+  int nDevices = 0;
+  for (findaddress = 1; findaddress < 127; findaddress++ )
+  {
+    // The i2c_scanner uses the return value of the Write.endTransmisstion to see if
+    // a device did acknowledge to the address.
+    Wire.beginTransmission(findaddress);
+    error = Wire.endTransmission();
+
+    if (error == 0)
+    {
+      Serial.print("Found device at address 0x");
+      if (findaddress < 16)
+        Serial.print("0");
+      Serial.print(findaddress, HEX);
+      Serial.println("  !");
+      bms.address = findaddress;
+      nDevices++;
+    }
+    else if (error == 4)
+    {
+      Serial.print("Unknown error at address 0x");
+      if (findaddress < 16)
+        Serial.print("0");
+      Serial.println(findaddress, HEX);
+    }
+  }
+  if (nDevices == 0)
+    Serial.println("No I2C devices found\n");
+  else
+    Serial.println("done\n");
+
+  return;
+}
+
 
