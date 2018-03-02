@@ -28,16 +28,16 @@ int16_t readFrom(uint8_t deviceAddress, uint16_t settingFlag, uint16_t numBytes)
 
   int16_t rData = -1;
   numOfBytes = Wire.available();
-  Serial.print("numOfBytes Available: ");
-  Serial.println(numOfBytes);
+//  Serial.print("numOfBytes Available: ");
+//  Serial.println(numOfBytes);
 
   if (numOfBytes > 0) {
     for (int i = 0; i < numOfBytes; i++) {
       uint8_t aData = Wire.read();
-      Serial.print("Value ");
-      Serial.print(i);
-      Serial.print(": ");
-      Serial.print(aData);
+//      Serial.print("Value ");
+//      Serial.print(i);
+//      Serial.print(": ");
+//      Serial.print(aData);
       if (numBytes > 1) {
         uint8_t bData = Wire.read();
         rData = (aData << 8) | bData;
@@ -94,6 +94,10 @@ void SearchDevices()
     Serial.println("No I2C devices found\n");
   else
     Serial.println("done\n");
+
+  String buf = String("Found " + String(nDevices) + " device(s)");
+  printScreen(20, 20, buf);
+  delay(1000);
 
   return;
 }

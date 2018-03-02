@@ -14,12 +14,12 @@ struct i2cBMS
   uint8_t ov_trip;
   uint8_t uv_trip;
   uint8_t cc_cfg;
-  uint16_t vc_hi[15]; // For storing the HI values of up to 15 cells
-  uint16_t vc_lo[15]; // For storing the LO values of up to 15 cells
+  int16_t vc_hi[15]; // For storing the HI values of up to 15 cells
+  int16_t vc_lo[15]; // For storing the LO values of up to 15 cells
   uint8_t bat_hi;
   uint8_t bat_lo;
-  uint16_t ts_hi[3]; // For storing the HI values of up to 3 NTC's
-  uint16_t ts_lo[3]; // For storing the LO values of up to 3 NTC's
+  int16_t ts_hi[3]; // For storing the HI values of up to 3 NTC's
+  int16_t ts_lo[3]; // For storing the LO values of up to 3 NTC's
   uint8_t cc_hi;
   uint8_t cc_lo;
   uint8_t adcgain1;

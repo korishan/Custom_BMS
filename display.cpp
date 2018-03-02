@@ -4,8 +4,7 @@
 #include "declares.h"
 #include "constants.h"
 
-U8GLIB_SSD1306_128X64 oled(U8G_I2C_OPT_DEV_0 | U8G_I2C_OPT_NO_ACK | U8G_I2C_OPT_FAST); // Fast I2C / TWI
-
+U8GLIB_SSD1306_128X64 oled(U8G_I2C_OPT_DEV_0 | U8G_I2C_OPT_NO_ACK | U8G_I2C_OPT_FAST);
 
 void oled_loop()
 {
@@ -23,6 +22,15 @@ void draw(void)
 {
   // graphic commands to redraw the complete screen should be placed here
   oled.setFont(u8g_font_unifont);
-  oled.drawStr( 0, 20, "Hello World!");
+  oled.drawStr( 0, 20, "System Status");
+  oled.drawStr(20, 20, ".....");
+}
+
+void printScreen(uint8_t x, uint8_t y, String input)
+{
+  char *buf;
+  input.toCharArray(buf, input.length());
+  oled.setFont(u8g_font_unifont);
+  oled.drawStr( x, y, buf);
 }
 

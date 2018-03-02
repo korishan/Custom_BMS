@@ -18,7 +18,7 @@ void setup()
 
 void loop()
 {
-  oled_loop();
+//  oled_loop();
   
   uint8_t rData;
   //  readSerial();
