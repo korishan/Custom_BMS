@@ -1,7 +1,6 @@
 #include <Arduino.h>
 #include <Wire.h>
 #include "constants.h"
-#include "U8glib.h"
 #include "declares.h"
 #include "bms.h"
 

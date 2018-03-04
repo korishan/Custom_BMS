@@ -4,30 +4,25 @@
 #include "declares.h"
 #include "bms.h"
 
+void get_bms_details()
+{
+  get_bms_status();
+  get_bms_voltages(bms.address);
+  
+}
+
 void get_bms_status()
 {
   get_Data(bms.address, SYS_STAT);
   return;
 }
 
-void readVoltages(uint8_t deviceAddress)
+void get_bms_voltages(uint8_t deviceAddress)
 {
   for (int i = 0; i < 15; i++) {
     bms.vc_hi[i] = readFrom(deviceAddress, VC_HI[i], 1);
     bms.vc_lo[i] = readFrom(deviceAddress, VC_LO[i], 1);
   }
-  Serial.print("VC_HI: ");
-  for (int i = 0; i < 15; i++) {
-    Serial.print(bms.vc_hi[i]);
-    Serial.print(", ");
-  }
-  Serial.println();
-  Serial.print("VC_LO: ");
-  for (int i = 0; i < 15; i++) {
-    Serial.print(bms.vc_lo[i]);
-    Serial.print(", ");
-  }
-  Serial.println();
 }
 
 void get_Data(uint8_t deviceAddress, uint16_t statusMode)
@@ -94,7 +89,7 @@ void displayData(uint8_t deviceAddress, uint16_t statusMode)
   switch (statusMode)
   {
     case SYS_STAT:
-      rData = bms.sys_stat
+      rData = bms.sys_stat;
       if (rData & CC_READY) sbuf[0] = String("CC Read");
       sbuf[1][0] = " "; // This bit isn't used
       if (rData & DEVICE_XREADY) sbuf[2] = String(" ");
