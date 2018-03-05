@@ -70,6 +70,8 @@ void readSerial()
   char strRemaining[32];
   int intValue = 0;
   char strVariable[16];
+  char buf[64];
+
 
   recvWithEndMarker(receivedChars);
   if (newData == true)
@@ -101,35 +103,22 @@ void readSerial()
         switch (strCmd[1])
         {
           case 'v':
-            if (strcmp(receivedChars, "dv disp") == 0)
+            if (strcmp(strVariable, "disp") == 0)
               Serial.println(displayStatusRefresh);
-            else if (strcmp(receivedChars, "dv bms") == 0)
+            else if (strcmp(strVariable, "bms") == 0)
               Serial.println(bmsRefresh);
-            else if (receivedChars[2] == 1) {
-              Serial.print(".");
-              Serial.println(newData);
-            }
+            else if (receivedChars[2] == 1)
+              Serial.println("Option not available");
             break;
         }
         break;
       case 's':
-        char buf[64];
         sscanf(receivedChars, "%s %s %d", strCmd, strVariable, &intValue);
         switch (strCmd[1])
         {
           case 'v':
-            sprintf(buf, "Current Value of 'displayStatusRefresh' = %d", displayStatusRefresh);
-            Serial.println(buf);
-            sprintf(buf, "Trying to set 'displayStatusRefresh' to %d", intValue);
-            Serial.println(buf);
-            sprintf(buf, "Value of 'strVariable' is %s", strVariable);
-            Serial.println(buf);
-
-            if (strVariable == "disp")
+            if (strcmp(strVariable, "disp") == 0)
               displayStatusRefresh = intValue;
-            sprintf(buf, "New Value of 'displayStatusRefresh' = %d", displayStatusRefresh);
-            Serial.println(buf);
-
             break;
           default:
             break;
