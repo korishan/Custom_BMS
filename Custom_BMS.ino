@@ -65,80 +65,90 @@ void directCommand(char command)
 
 void readSerial()
 {
-  char bCmd[32];
+  char strCmd[32];
   char receivedChars[numChars]; // an array to store the received data
+  char strRemaining[32];
 
   recvWithEndMarker(receivedChars);
   if (newData == true)
   {
     Serial.print("Received Command: ");
     Serial.println(receivedChars);
-    if (newData == true)
+    sscanf(receivedChars, "%s %s", strCmd, strRemaining);
+
+    switch (strCmd[0])
     {
-      switch (receivedChars[0])
-      {
-        case '1':
-          oledDisplay = DISPLAYMENU;
-          get_bms_status();
-          break;
-        case '2':
-          oledDisplay = DISPLAYVOLTAGES;
-          //get_bms_voltages(bms.address);
-          break;
-        case '3':
-          Serial.println("Not implimented yet.");
-          break;
-        case 'r':
-          oled.clear();
-          oled.println("ReScanning I2C Bus");
-          SearchDevices();
-          oled.println("Completed Scan");
-          break;
-        case 'd':
-          switch (receivedChars[1])
-          {
-            case 'v':
-            Serial.println(receivedChars[2]);
-            Serial.print("'");
-            if (receivedChars == "dv disp")
+      case '1':
+        oledDisplay = DISPLAYMENU;
+        get_bms_status();
+        break;
+      case '2':
+        oledDisplay = DISPLAYVOLTAGES;
+        //get_bms_voltages(bms.address);
+        break;
+      case '3':
+        Serial.println("Not implimented yet.");
+        break;
+      case 'r':
+        oled.clear();
+        oled.println("ReScanning I2C Bus");
+        SearchDevices();
+        oled.println("Completed Scan");
+        break;
+      case 'd':
+        switch (strCmd[1])
+        {
+          case 'v':
+            if (strcmp(receivedChars, "dv disp") == 0)
               Serial.println(displayStatusRefresh);
-            else if (receivedChars == "dv bms")
+            else if (strcmp(receivedChars, "dv bms") == 0)
               Serial.println(bmsRefresh);
-            else if (receivedChars[2] == 1){
+            else if (receivedChars[2] == 1) {
               Serial.print(".");
               Serial.println(newData);
             }
-            Serial.print("'");
-              break;
-          }
-          break;
-        case 's':
-          switch (receivedChars[1])
-          {
-            case 'v':
-              Serial.println(getValue(receivedChars));
-              Serial.println(displayStatusRefresh);
-              if (strcmp(receivedChars, "sv disp") >= 6)
-                displayStatusRefresh = getValue(receivedChars);
-              Serial.println(displayStatusRefresh);
-              break;
-            default:
-              break;
-          }
-          if (receivedChars == "")
-          {
+            break;
+        }
+        break;
+      case 's':
+        char strVariable[16];
+        int intValue;
+        sscanf(strRemaining, "%s %d", strVariable, &intValue);
 
-          }
-          else if (receivedChars == "")
-          {
+        switch (strCmd[1])
+        {
+          case 'v':
+            char buf[64];
+            sprintf(buf, "Current Value of 'displayStatusRefresh' = %d", displayStatusRefresh);
+            Serial.println(buf);
+            sprintf(buf, "Trying to set 'displayStatusRefresh' to %d", intValue);
+            Serial.println(buf);
+            sprintf(buf, "Value of 'strVariable' is %s", strVariable);
+            Serial.println(buf);
 
-          }
-          break;
-        default:
-          Serial.println("Invalid option.");
-      }
-      newData = false;
+            if (strVariable == "disp")
+              displayStatusRefresh = intValue;
+            sprintf(buf, "New Value of 'displayStatusRefresh' = %d", displayStatusRefresh);
+            Serial.println(buf);
+
+            break;
+          default:
+            break;
+        }
+        if (receivedChars == "")
+        {
+
+        }
+        else if (receivedChars == "")
+        {
+
+        }
+        break;
+      default:
+        Serial.println("Invalid option.");
     }
+    newData = false;
+
     Serial.println();
     Serial.println();
     PrintMenu();
