@@ -68,13 +68,15 @@ void readSerial()
   char strCmd[32];
   char receivedChars[numChars]; // an array to store the received data
   char strRemaining[32];
+  int intValue = 0;
+  char strVariable[16];
 
   recvWithEndMarker(receivedChars);
   if (newData == true)
   {
     Serial.print("Received Command: ");
     Serial.println(receivedChars);
-    sscanf(receivedChars, "%s %s", strCmd, strRemaining);
+    sscanf(receivedChars, "%s", strCmd);
 
     switch (strCmd[0])
     {
@@ -111,14 +113,11 @@ void readSerial()
         }
         break;
       case 's':
-        char strVariable[16];
-        int intValue;
-        sscanf(strRemaining, "%s %d", strVariable, &intValue);
-
+        char buf[64];
+        sscanf(receivedChars, "%s %s %d", strCmd, strVariable, &intValue);
         switch (strCmd[1])
         {
           case 'v':
-            char buf[64];
             sprintf(buf, "Current Value of 'displayStatusRefresh' = %d", displayStatusRefresh);
             Serial.println(buf);
             sprintf(buf, "Trying to set 'displayStatusRefresh' to %d", intValue);
