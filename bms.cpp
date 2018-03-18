@@ -19,7 +19,8 @@ void get_bms_status()
 
 void get_bms_voltages(uint8_t deviceAddress)
 {
-  for (int i = 0; i < 15; i++) {
+  
+  for (int i = 0; i < 4; i++) {
     bms.vc_hi[i] = readFrom(deviceAddress, VC_HI[i], 1);
     bms.vc_lo[i] = readFrom(deviceAddress, VC_LO[i], 1);
   }

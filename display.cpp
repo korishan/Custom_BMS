@@ -111,7 +111,12 @@ void displaySysStatus()
 
 void displayVoltage()
 {
-  oled.println( "Cell Voltages:");
+//  oled.println( "Cell Voltages:");
+//  for (int i = 0; i < 4; i++) {
+//    bms.vc_hi[i] = readFrom(deviceAddress, VC_HI[i], 1);
+//    bms.vc_lo[i] = readFrom(deviceAddress, VC_LO[i], 1);
+//  }
+
   oled.println( "1.10 | 2.20 | 3.30");
   oled.println( "4.40");
 }
