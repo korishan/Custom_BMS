@@ -83,7 +83,7 @@ void get_Data(uint8_t deviceAddress, uint16_t statusMode)
 
 void displayData(uint8_t deviceAddress, uint16_t statusMode)
 {
-  char *buf = malloc(sizeof (char) * 100);
+  char *buf = (char*)malloc(sizeof (char) * 100);
   String sbuf[8];
   uint16_t rData;
 
@@ -92,7 +92,7 @@ void displayData(uint8_t deviceAddress, uint16_t statusMode)
     case SYS_STAT:
       rData = bms.sys_stat;
       if (rData & CC_READY) sbuf[0] = String("CC Read");
-      sbuf[1][0] = " "; // This bit isn't used
+      sbuf[1][0] = ' '; // This bit isn't used
       if (rData & DEVICE_XREADY) sbuf[2] = String(" ");
       if (rData & OVRD_ALERT) sbuf[3] = String("ALERT");
       if (rData & UV) sbuf[4] =  String("UnderVolt");
